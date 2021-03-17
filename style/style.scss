@@ -1,0 +1,28 @@
+.head-site {
+    padding: 10px 45px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    box-sizing: border-box;
+}
+
+.cart-button {
+    padding: 10px;
+    background-color: aqua;
+    border-radius: 10px;
+    border: none;
+}
+.goods-list {
+    margin: 120px auto;
+    display: flex;
+    width: 450px;
+    justify-content: space-around;
+}
+
+.goods-item {
+    flex-direction: column;
+    display: flex;
+    width: 100px;
+    text-align: center;
+    border: 1px solid;
+}
