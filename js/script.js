@@ -16,13 +16,10 @@ const goods = [{
     },
 ];
 
-const renderGoodsItem = (title, price) => {
-    return `<div class="goods-item"><h3>${title}</h3><p>${price}</p></div>`;
-};
-
-const renderGoodsList = (list) => {
-    let goodsList = list.map(item => renderGoodsItem(item.title, item.price)).join("");
-    document.querySelector('.goods-list').innerHTML = goodsList;
+const renderGoodsItem = (title = "Название товара", price = "Цена") => {
+    return `<div class="goods-item"><h3>Товар: ${title}</h3><p>Цена: ${price}</p></div>`
 }
 
-renderGoodsList(goods);
+const renderGoodsList = (list) => document.querySelector('.goods-list').innerHTML = list.map(item => renderGoodsItem(item.title, item.price)).join("")
+
+renderGoodsList(goods)
