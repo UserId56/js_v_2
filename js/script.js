@@ -1,64 +1,137 @@
+const cartbtn = document.querySelector(".cart-button")
+const goodBlock = document.querySelector('.goods-list')
+const cartBlock = document.querySelector('.cart-list')
+
 class GoodsItem {
-    constructor(title, price) {
+    constructor(id, title, price) {
+        this.id = id
         this.title = title;
         this.price = price;
     }
     render() {
-        return `<div class="goods-item"><h3>${this.title}</h3><p>${this.price}</p></div>`;
+        return `<div class="goods-item" data-id="${this.id}"><h3>${this.title}</h3><p>${this.price}</p></div>`;
     }
 }
-class GoodsList {
+
+class ListItems {
     constructor() {
-        this.goods = [];
+        this.list = [];
     }
-    fetchGoods() {
-        this.goods = [{
-                title: 'Shirt',
-                price: 150
-            },
-            {
-                title: 'Socks',
-                price: 50
-            },
-            {
-                title: 'Jacket',
-                price: 350
-            },
-            {
-                title: 'Shoes',
-                price: 250
-            },
-        ];
+    fetch(url, listname) {
+        let xhr
+        if (window.XMLHttpRequest) {
+            // Chrome, Mozilla, Opera, Safari
+            xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            // Internet Explorer
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                listname.render(JSON.parse(xhr.responseText));
+            }
+        }
+        xhr.open("GET", url)
+        xhr.timeout = 15000
+        xhr.send()
     }
-    render() {
+    render(RequestListItems) {
+        this.list = RequestListItems
         let listHtml = '';
-        this.goods.forEach(good => {
-            const goodItem = new GoodsItem(good.title, good.price);
+        this.list.forEach(good => {
+            const goodItem = new GoodsItem(good.id, good.title, good.price);
             listHtml += goodItem.render();
         });
-        document.querySelector('.goods-list').innerHTML = listHtml;
+        goodBlock.innerHTML = listHtml;
     }
     summerPrice() {
         let summerAllItem = 0
-        this.goods.forEach(good => {
+        this.list.forEach(good => {
             summerAllItem += good.price
         })
         return summerAllItem
     }
 }
 
-const list = new GoodsList();
-list.fetchGoods();
-list.render();
+const list = new ListItems();
+list.fetch("goods/goods.json", list);
+
 console.log(list.summerPrice())
 
 class CartItem {
-    constructor(title, price, count) {
+    constructor(id, title, price, count) {
+        this.id = id
         this.title = title
         this.count = count
-        this.summ = CartItem.summAllcount(count, price)
+        this.summ = count * price
+        this.price = price
     }
-    summAllcount(count, price) {
-        return count * price
+
+    render() {
+        return `<div class="cart-item" data-id="${this.id}"><h3>${this.title}</h3><p>${this.price}</p><p>Кол-во: ${this.count}</p><p>Сумма: ${this.summ}</p></div>`;
     }
 }
+
+class CartList {
+    constructor() {
+        this.list = [];
+    }
+    fetch(url, listname) {
+        let xhr
+        if (window.XMLHttpRequest) {
+            // Chrome, Mozilla, Opera, Safari
+            xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            // Internet Explorer
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                listname.render(JSON.parse(xhr.responseText));
+            }
+        }
+        xhr.open("GET", url)
+        xhr.timeout = 15000
+        xhr.send()
+    }
+    render(RequestListItems) {
+        this.list = RequestListItems
+        let listHtml = '';
+        this.list.forEach(item => {
+            const cartItem = new CartItem(item.id, item.title, item.price, item.count);
+            listHtml += cartItem.render();
+        });
+        goodBlock.innerHTML = listHtml;
+    }
+    summerPrice() {
+        let summerAllItem = 0
+        this.list.forEach(good => {
+            summerAllItem += good.price
+        })
+        return summerAllItem
+    }
+    addItemCart(id, count) {
+        this.list.forEach(item => {
+            if (id == item.id) {
+                item.count = count
+            } else
+                indexItem = list.findindex(el => (id == el.id) ? true : false)
+            cartList.push(list[indexItem])
+        })
+    }
+}
+
+function cartGen() {
+    let cartList = new CartList
+    cartList.fetch('cart/cart.json', cartList)
+}
+
+function showCart() {
+    cartBlock.classList.toggle("d-none")
+    goodBlock.classList.toggle("d-none")
+    if (cartBlock.className == "cart-list") {
+        cartGen()
+    }
+}
+
+cartbtn.addEventListener("click", showCart)

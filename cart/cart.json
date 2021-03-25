@@ -1,0 +1,11 @@
+[{
+    "id": "0001",
+    "title": "Shirt",
+    "price": 150,
+    "count": 10
+}, {
+    "id": "0002",
+    "title": "Socks",
+    "price": 50,
+    "count": 13
+}]

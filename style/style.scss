@@ -11,8 +11,10 @@
     background-color: aqua;
     border-radius: 10px;
     border: none;
+    cursor: pointer;
 }
-.goods-list {
+.goods-list,
+.cart-lis {
     margin: 120px auto;
     display: flex;
     width: 450px;
@@ -20,6 +22,18 @@
 }
 
 .goods-item {
+    flex-direction: column;
+    display: flex;
+    width: 100px;
+    text-align: center;
+    border: 1px solid;
+}
+
+.d-none {
+    display: none;
+}
+
+.cart-item {
     flex-direction: column;
     display: flex;
     width: 100px;
