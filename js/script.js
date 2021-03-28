@@ -17,23 +17,11 @@ class ListItems {
     constructor() {
         this.list = [];
     }
-    fetch(url, listname) {
-        let xhr
-        if (window.XMLHttpRequest) {
-            // Chrome, Mozilla, Opera, Safari
-            xhr = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            // Internet Explorer
-            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                listname.render(JSON.parse(xhr.responseText));
-            }
-        }
-        xhr.open("GET", url)
-        xhr.timeout = 15000
-        xhr.send()
+
+    fetch(url, list) {
+        fetch(url)
+            .then((response) => response.json())
+            .then((dateItems) => list.render(dateItems))
     }
 }
 
@@ -88,7 +76,7 @@ class CartList extends ListItems {
             const cartItem = new CartItem(item.id, item.title, item.price, item.count);
             listHtml += cartItem.render();
         });
-        goodBlock.innerHTML = listHtml;
+        cartBlock.innerHTML = listHtml;
     }
     summerPrice() {
         let summerAllItem = 0

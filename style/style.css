@@ -19,7 +19,8 @@
   cursor: pointer;
 }
 
-.goods-list {
+.goods-list,
+.cart-list {
   margin: 120px auto;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -42,7 +43,7 @@
   border: 1px solid;
 }
 
-.cart-lis {
+.d-none {
   display: none;
 }
 
