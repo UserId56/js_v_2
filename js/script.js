@@ -2,7 +2,7 @@ const cartbtn = document.querySelector(".cart-button")
 const goodBlock = document.querySelector('.goods-list')
 const cartBlock = document.querySelector('.cart-list')
 
-class GoodsItem {
+class Item {
     constructor(id, title, price) {
         this.id = id
         this.title = title;
@@ -35,11 +35,17 @@ class ListItems {
         xhr.timeout = 15000
         xhr.send()
     }
+}
+
+class GoodsItems extends ListItems {
+    constructor() {
+        super()
+    }
     render(RequestListItems) {
         this.list = RequestListItems
         let listHtml = '';
         this.list.forEach(good => {
-            const goodItem = new GoodsItem(good.id, good.title, good.price);
+            const goodItem = new Item(good.id, good.title, good.price);
             listHtml += goodItem.render();
         });
         goodBlock.innerHTML = listHtml;
@@ -53,47 +59,28 @@ class ListItems {
     }
 }
 
-const list = new ListItems();
+const list = new GoodsItems();
 list.fetch("goods/goods.json", list);
 
-console.log(list.summerPrice())
-
-class CartItem {
+class CartItem extends Item {
     constructor(id, title, price, count) {
-        this.id = id
-        this.title = title
+        super(id, title, price)
         this.count = count
-        this.summ = count * price
-        this.price = price
+        this.summ = CartItem.summItem(count, price)
     }
-
     render() {
         return `<div class="cart-item" data-id="${this.id}"><h3>${this.title}</h3><p>${this.price}</p><p>Кол-во: ${this.count}</p><p>Сумма: ${this.summ}</p></div>`;
     }
+    static summItem(count, price) {
+        return count * price
+    }
 }
 
-class CartList {
+class CartList extends ListItems {
     constructor() {
-        this.list = [];
+        super()
     }
-    fetch(url, listname) {
-        let xhr
-        if (window.XMLHttpRequest) {
-            // Chrome, Mozilla, Opera, Safari
-            xhr = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            // Internet Explorer
-            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                listname.render(JSON.parse(xhr.responseText));
-            }
-        }
-        xhr.open("GET", url)
-        xhr.timeout = 15000
-        xhr.send()
-    }
+
     render(RequestListItems) {
         this.list = RequestListItems
         let listHtml = '';
