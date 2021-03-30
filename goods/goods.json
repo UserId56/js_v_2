@@ -1,21 +1,29 @@
 [{
         "id": "0001",
         "title": "Shirt",
-        "price": 150
+        "price": 150,
+        "imgUrl": "goods/itemImg/0001.jpg",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum rem quaerat vitae atque, iste at placeat quas temporibus nesciunt odit molestiae delectus obcaecati est deleniti optio facere dolore eaque sapiente?"
     },
     {
         "id": "0002",
         "title": "Socks",
-        "price": 50
+        "price": 50,
+        "imgUrl": "goods/itemImg/0002.jpg",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum rem quaerat vitae atque, iste at placeat quas temporibus nesciunt odit molestiae delectus obcaecati est deleniti optio facere dolore eaque sapiente?"
     },
     {
         "id": "0003",
         "title": "Jacket",
-        "price": 350
+        "price": 350,
+        "imgUrl": "goods/itemImg/0003.jpg",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum rem quaerat vitae atque, iste at placeat quas temporibus nesciunt odit molestiae delectus obcaecati est deleniti optio facere dolore eaque sapiente?"
     },
     {
         "id": "0004",
         "title": "Shoes",
-        "price": 250
+        "price": 250,
+        "imgUrl": "goods/itemImg/0004.jpg",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum rem quaerat vitae atque, iste at placeat quas temporibus nesciunt odit molestiae delectus obcaecati est deleniti optio facere dolore eaque sapiente?"
     }
 ]
