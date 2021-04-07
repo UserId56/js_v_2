@@ -20,17 +20,15 @@
             <button class="cart-button" type="button" v-on:click="showCart">{{btCart}}</button>
         </header>
         <main class="shop-list">
-            <div class="goods-list" v-show="!isVisibleCart">
-                <input type="text" v-model="seach" v-on:input="seachGoods" class="seach" placeholder="Поиск">
-                <div class="goods-item" v-for="good in seachList" :key="good.id" :id="good.id">
-                    <h3>{{good.title}}</h3><img :src="good.imgUrl"><span class="description">{{good.description}}</span>
-                    <p>Цена: <span class="item-price">{{good.price}}</span></p><input type="number" name="count"
-                        id="item-0001" class="item-count" value="1" min="1"><button class="add-item" type="button">В
-                        корзину</button>
-                </div>
-            </div>
+            <input type="text" v-model="seach" v-on:input="seachGoods" class="seach" placeholder="Поиск"
+                v-show="!isVisibleCart">
             <div class="item-no-seach" v-show="noSeach">
                 <h3>Товар "{{seach}}" не найден!</h3>
+            </div>
+            <div class=" goods-list" v-show="!isVisibleCart">
+                <div v-for="good in seachList" :key="good.id" :id="good.id">
+                    <good-list :good="good" @add-item="addItem"></good-list>
+                </div>
             </div>
             <div class="loader" v-show="loader">
                 <div class="lds-grid" v-show="loader">
@@ -46,13 +44,12 @@
                 </div>
             </div>
             <div class="cart-list" v-show="isVisibleCart">
-                <div class="cart-item" v-for="item in listCart" :key="item.id" :id="item.id">
-                    <h3>{{item.title}}</h3><img :src="item.imgUrl">
-                    <p>Цена: {{item.price}}</p><input type="number" name="count" :id="'item-'+ item.id"
-                        class="item-count" :value="item.count" min="1">
-                    <p>Сумма: {{item.summEl}}</p>
+                <div v-for="item in listCart" :key="item.id" :id="item.id">
+                    <cart-list :item="item" @remove-item="removeItem"></cart-list>
                 </div>
-
+                <div class="no-item-cart" v-show="(summallItem==0)">
+                    <h3>Товара нет</h3>
+                </div>
             </div>
             <div class="sum-cart" v-show="isVisibleCart">
                 <span class="sum-text">Общая сумма:</span>
