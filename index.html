@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;1,200;1,600&display=swap"
         rel="stylesheet">
@@ -13,17 +14,55 @@
 </head>
 
 <body>
-    <header class="head-site">
-        <a href="/form/" class="feedback">Обратная связь</a>
-        <button class="cart-button" type="button">Корзина</button>
-    </header>
-    <main class="shop-list">
-        <div class="goods-list"></div>
-        <div class="cart-list d-none"></div>
-    </main>
-    <footer class="footer-site">
-        <span class="footer-site__text">Это футер</span>
-    </footer>
+    <div id="app">
+        <header class="head-site">
+            <a href="/form/" class="feedback">Обратная связь</a>
+            <button class="cart-button" type="button" v-on:click="showCart">{{btCart}}</button>
+        </header>
+        <main class="shop-list">
+            <div class="goods-list" v-show="!isVisibleCart">
+                <input type="text" v-model="seach" v-on:input="seachGoods" class="seach" placeholder="Поиск">
+                <div class="goods-item" v-for="good in seachList" :key="good.id" :id="good.id">
+                    <h3>{{good.title}}</h3><img :src="good.imgUrl"><span class="description">{{good.description}}</span>
+                    <p>Цена: <span class="item-price">{{good.price}}</span></p><input type="number" name="count"
+                        id="item-0001" class="item-count" value="1" min="1"><button class="add-item" type="button">В
+                        корзину</button>
+                </div>
+            </div>
+            <div class="item-no-seach" v-show="noSeach">
+                <h3>Товар "{{seach}}" не найден!</h3>
+            </div>
+            <div class="loader" v-show="loader">
+                <div class="lds-grid" v-show="loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="cart-list" v-show="isVisibleCart">
+                <div class="cart-item" v-for="item in listCart" :key="item.id" :id="item.id">
+                    <h3>{{item.title}}</h3><img :src="item.imgUrl">
+                    <p>Цена: {{item.price}}</p><input type="number" name="count" :id="'item-'+ item.id"
+                        class="item-count" :value="item.count" min="1">
+                    <p>Сумма: {{item.summEl}}</p>
+                </div>
+
+            </div>
+            <div class="sum-cart" v-show="isVisibleCart">
+                <span class="sum-text">Общая сумма:</span>
+                <span class="sum-num">{{summallItem}}</span>
+            </div>
+        </main>
+        <footer class="footer-site">
+            <span class="footer-site__text">Это футер</span>
+        </footer>
+    </div>
     <script src="js/script.js"></script>
 </body>
 
