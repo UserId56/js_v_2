@@ -2,6 +2,50 @@ const cartbtn = document.querySelector(".cart-button")
 const goodBlock = document.querySelector('.goods-list')
 const cartBlock = document.querySelector('.cart-list')
 
+Vue.component('good-list', {
+    props: {
+        good: {
+            type: Object,
+            requered: true
+        }
+    },
+    template: `<div class="goods-item">
+    <h3>{{good.title}}</h3>
+                <img :src= "good.imgUrl">
+                <span class="description">{{good.description}}</span>
+                <p>Цена: <span class="item-price">{{good.price}}</span></p>
+                <input type="number" name="count" class="item-count" v-model="good.count" min="1">
+                <button class="add-item" type="button" @click="$emit('add-item', good)">В корзину</button>
+                
+                
+    </div>`,
+    methods: {
+        fuck() {
+            console.log(this.isVisibleCart)
+        }
+    }
+})
+Vue.component('cart-list', {
+    props: {
+        item: {
+            type: Object,
+            requered: true
+        }
+    },
+    template: `<div class="cart-item">
+    <button class="rm" v-on:click="$emit('remove-item', item)">&times;</button>
+    <h3>{{item.title}}</h3>
+                <img :src="item.imgUrl">
+                <span class="description">{{item.description}}</span>
+                <p>Цена: <span class="item-price">{{item.price}}</span></p>
+                <input type="number" name="count" :id="'item-'+ item.id"
+                        class="item-count" :value="item.count" min="1">
+                <p>Сумма: {{item.summEl}}</p></template>
+                
+    </div>`,
+
+})
+
 let goodVue = new Vue({
     el: "#app",
     data() {
@@ -18,6 +62,35 @@ let goodVue = new Vue({
         }
     },
     methods: {
+        removeItem(item) {
+            this.listCart = this.listCart.filter((el) => el.id != item.id)
+            this.summallItem = this.listCart.reduce((sumCart, el) => sumCart + el.summEl, 0)
+        },
+        addItem(good) {
+            console.log(good)
+            let add = false
+            this.listCart.forEach((el) => {
+                if (el.id == good.id) {
+                    el.count += good.count
+                    el.summEl = el.price * el.count
+                    add = true
+                }
+
+            })
+            if (!add) {
+                let newEl = {
+                    id: good.id,
+                    title: good.title,
+                    count: good.count,
+                    imgUrl: good.imgUrl,
+                    price: good.price,
+                    summEl: good.price * good.count,
+                }
+                console.log(newEl)
+                this.listCart.push(newEl)
+            }
+            console.log(this.listCart)
+        },
         seachGoods() {
             const reg = /\s+/g
             let fixSeach = this.seach.replace(reg, '')
@@ -32,8 +105,10 @@ let goodVue = new Vue({
         },
         showCart() {
             this.isVisibleCart = !this.isVisibleCart
+            this.noSeach = false
             this.btCart = this.isVisibleCart ? "Назад" : "Корзина"
             this.summallItem = this.listCart.reduce((sumCart, el) => sumCart + el.summEl, 0)
+            console.log(this.summallItem)
         },
     },
     async mounted() {
@@ -52,7 +127,6 @@ let goodVue = new Vue({
         })
 
     }
-
 })
 
 // class Item {
